@@ -30,5 +30,26 @@ describe("Players model functions",()=>{
             let players = await db("players")
             expect(players).toHaveLength(1)
         })
+        it("created player has all props", async()=>{
+            const first = await Player.createPlayer(player1)
+            const second = await Player.createPlayer(player2)
+            expect(first).toMatchObject({player_id:1,...player1})
+            expect(second).toMatchObject({player_id:2,...player2})
+        })
+    })
+    describe("deletes a player",()=>{
+        it("removes player form db",async()=>{
+            const [player_id] = await db("players").insert(player1)
+            let player = await db("players").where({player_id}).first()
+            expect(player).toBeTruthy()
+            await request(server).delete(`/players/${player_id}`)
+            player = await db("players").where({player_id}).first()
+            expect(player).toBeFalsy()
+        })
+        it("responds with the deleted player", async()=>{
+            const [player_id] = await db("players").insert(player1)
+            const deletedPlayer = await request(server).delete(`/players/${player_id}`)
+            expect(deletedPlayer.body).toMatchObject(player1)
+        })
     })
 })

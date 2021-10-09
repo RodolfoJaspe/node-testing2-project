@@ -11,4 +11,9 @@ router.get("/", (req,res) => {
         })
 })
 
+router.delete("/:player_id", async (req,res) => {
+    const deletedPlayer = await Players.deletePlayer(req.params.player_id)
+    res.status(200).json(deletedPlayer)
+})
+
 module.exports = router

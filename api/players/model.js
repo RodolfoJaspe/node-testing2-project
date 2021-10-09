@@ -4,10 +4,19 @@ function findAll(){
     return db("players")
 }
 
-async function createPlayer(player){
-    const [id] = await db("players").insert(player)
-
-    return findAll()
+function findById(player_id){
+    return db("players").where({player_id}).first()
 }
 
-module.exports = {findAll,createPlayer}
+async function createPlayer(player){
+    const [id] = await db("players").insert(player)
+    return findById(id)
+}
+
+async function deletePlayer (player_id){
+    const player = await findById(player_id) 
+    await db("players").where({player_id}).del()
+    return player
+}
+
+module.exports = {findAll,createPlayer,findById,deletePlayer}

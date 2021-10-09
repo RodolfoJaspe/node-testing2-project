@@ -3,6 +3,6 @@ const server = express()
 const playersRouter = require("./players/router")
 
 server.use(express.json())
-server.use("/api/players", playersRouter)
+server.use("/players", playersRouter)
 
 module.exports = server
