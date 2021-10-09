@@ -4,4 +4,10 @@ function findAll(){
     return db("players")
 }
 
-module.exports = {findAll}
+async function createPlayer(player){
+    const [id] = await db("players").insert(player)
+
+    return findAll()
+}
+
+module.exports = {findAll,createPlayer}
